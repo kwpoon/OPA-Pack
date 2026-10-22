@@ -36,11 +36,12 @@ Xiaojie Gao<sup>1</sup>, Pheng-Ann Heng<sup>1</sup>, Yun-Hui Liu<sup>4</sup>, an
 
 This repository accompanies our paper **OPA-Pack: Object-Property-Aware Robotic Bin Packing**. OPA-Pack incorporates object properties into robotic bin-packing planning to reduce load on fragile objects and separate incompatible object pairs while preserving packing compactness.
 
-Our framework consists of two stages. First, an object-property recognition scheme combines a vision-language model with retrieval-augmented generation and chain-of-thought reasoning to predict object-centric properties and derive pairwise avoidance relations. This process produces the **OPA dataset**, containing property annotations for **1,032 everyday objects**. Second, **OPA-Net** encodes candidate-object geometry and properties, together with occupancy, fragility, and avoidance heightmaps, to select the next object and its placement. The network is trained using deep Q-learning with a reward that jointly considers packing compactness, load on fragile objects, and separation of incompatible pairs.
-
 <p align="center">
   <img src="figures/oop_pack_framework_v9.png" alt="OPA-Pack framework" width="100%">
 </p>
+
+
+Our framework consists of two stages. First, an object-property recognition scheme combines a vision-language model with retrieval-augmented generation and chain-of-thought reasoning to predict object-centric properties and derive pairwise avoidance relations. This process produces the **OPA dataset**, containing property annotations for **1,032 everyday objects**. Second, **OPA-Net** encodes candidate-object geometry and properties, together with occupancy, fragility, and avoidance heightmaps, to select the next object and its placement. The network is trained using deep Q-learning with a reward that jointly considers packing compactness, load on fragile objects, and separation of incompatible pairs.
 
 ## 🛠️ Environment Setup
 
