@@ -38,7 +38,7 @@ This repository accompanies our paper **OPA-Pack: Object-Property-Aware Robotic 
 
 Our framework consists of two stages. First, an object-property recognition scheme combines a vision-language model with retrieval-augmented generation and chain-of-thought reasoning to predict object-centric properties and derive pairwise avoidance relations. This process produces the **OPA dataset**, containing property annotations for **1,032 everyday objects**. Second, **OPA-Net** encodes candidate-object geometry and properties, together with occupancy, fragility, and avoidance heightmaps, to select the next object and its placement. The network is trained using deep Q-learning with a reward that jointly considers packing compactness, load on fragile objects, and separation of incompatible pairs.
 
-<p align="center"><a href="figures/oop_pack_framework_v9.pdf"><img src="figures/oop_pack_framework_v9.pdf" alt="OPA-Pack framework" width="100%"></a></p>
+[OPA-Pack framework](figures/oop_pack_framework_v9.pdf)
 
 ## 🛠️ Environment Setup
 
