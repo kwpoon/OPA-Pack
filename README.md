@@ -6,11 +6,13 @@
 </p>
 
 <p align="center">
+  <a href="https://arxiv.org/abs/2505.13339"><img src="https://img.shields.io/badge/Paper-arXiv-b31b1b" alt="Paper on arXiv"></a>
+  &ensp;
   <img src="https://img.shields.io/badge/codes-coming%20soon-lightgrey" alt="[codes coming soon]">
   &ensp;
-  <a href="#dataset"><img src="https://img.shields.io/badge/dataset-OPA-yellow" alt="[dataset]"></a>
+  <a href="https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing"><img src="https://img.shields.io/badge/dataset-OPA-yellow" alt="[dataset]"></a>
 </p>
-<!-- Replace #dataset above with the download URL when available. -->
+
 
 ---
 
@@ -31,6 +33,8 @@ OPA-Pack combines object-property recognition with reinforcement learning to pac
 <a id="dataset"></a>
 
 ## 📦 Dataset
+
+[Download the OPA dataset from Google Drive](https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing)
 
 The OPA dataset contains **1,032 everyday objects** from Objaverse-v1, grouped by use:
 
