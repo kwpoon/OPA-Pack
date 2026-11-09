@@ -1,0 +1,38 @@
+# Standalone OPA-Pack runtime for Linux x86_64 with an NVIDIA GPU.
+# Create: conda env create -f env_opa_pack.yml
+# Activate: conda activate opa_pack
+# Uses prebuilt CUDA 12.8 wheels; no local CUDA compiler or custom extensions needed.
+name: opa_pack
+channels:
+  - https://repo.anaconda.com/pkgs/main
+  - nodefaults
+dependencies:
+  - python=3.11
+  - pip=24.0
+  - setuptools<81
+  - wheel
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cu128
+      - setuptools==79.0.1
+      - torch==2.7.0+cu128
+      - numpy==1.23.5
+      - scipy==1.15.3
+      - gym==0.23.1
+      - trimesh==3.12.3
+      - networkx==2.8.6
+      - rtree==1.4.1
+      - pybullet==3.2.7
+      - transforms3d==0.4.2
+      - opencv-python-headless==4.11.0.86
+      - matplotlib==3.7.5
+      - cloudpickle==3.1.2
+      - tqdm==4.62.3
+      - tensorboardX==2.6.5
+      - wandb==0.31.0
+variables:
+  OPENBLAS_CORETYPE: Haswell
+  OPENBLAS_NUM_THREADS: '1'
+  OMP_NUM_THREADS: '1'
+  TORCH_FORCE_NO_WEIGHTS_ONLY_LOAD: '1'
+  MPLBACKEND: Agg
+  WANDB_MODE: disabled
