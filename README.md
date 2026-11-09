@@ -4,7 +4,7 @@ Jia-Hui Pan, Yeok Tatt Cheah, Zhengzhe Liu, Ka-Hei Hui, Xiaojie Gao, Pheng-Ann H
 
 [Paper](https://arxiv.org/abs/2505.13339) · [Project repository](https://github.com/kwpoon/OPA-Pack/) · [OPA dataset](https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing)
 
-OPA-Pack combines object-property information with reinforcement learning to pack irregular objects compactly, separate incompatible items, and reduce loads on fragile objects. This repository contains the packing-policy training and simulation evaluation code. It builds on **IR-BPP: Learning Physically Realizable Skills for Online Packing of General 3D Shapes**; the original README is preserved in [README-IR-BPP.md](README-IR-BPP.md).
+OPA-Pack combines object-property information with reinforcement learning to pack irregular objects compactly, separate incompatible items, and reduce loads on fragile objects. This repository contains the packing-policy training and simulation evaluation code.
 
 ## Method
 
