@@ -24,18 +24,11 @@ conda activate opa_pack
 python -c "import torch; print(torch.__version__); print('CUDA available:', torch.cuda.is_available())"
 ```
 
-[env_opa_pack.yml](env_opa_pack.yml) specifies Python 3.11, PyTorch 2.7.0 + CUDA 12.8, NumPy, Gym, trimesh, PyBullet, and the other runtime packages. It uses prebuilt packages and does not require a local CUDA compiler, a separate IR-BPP installation, or VL-Tree.
-
-Run commands from the repository root. The examples below use `run_opa_pack.sh`, which sets the runtime environment variables and invokes `main.py`. Alternatively, activate the Conda environment and call `python main.py` directly.
-
-```bash
-bash run_opa_pack.sh --help
-python run_experiment.py --help
-```
+[env_opa_pack.yml](env_opa_pack.yml) specifies Python 3.11, PyTorch 2.7.0 + CUDA 12.8, NumPy, Gym, trimesh, PyBullet, and the other runtime packages.
 
 ## Dataset
 
-Download the [OPA dataset](https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing) and place the subset directories under `dataset/`.
+Download the [processed OPA dataset](https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing) and place the subset directories under `dataset/`.
 
 | Subset | Command-line name | Objects |
 | --- | --- | ---: |
@@ -63,7 +56,7 @@ dataset/
 └── oop_cook/
 ```
 
-The other subsets use `dict_obj_forbid_list_oop_tool.json` and `dict_obj_forbid_list_oop_cook.json`. The runtime reads `shape_info_json` and these JSON pair lists, rather than legacy `.npy` pair lists or directories named `*_old`. Objects marked either fragile or soft are treated as fragile by the runtime loader. Heightmap preprocessing caches may also appear under each subset.
+The other subsets use `dict_obj_forbid_list_oop_tool.json` and `dict_obj_forbid_list_oop_cook.json`. The runtime reads `shape_info_json` and these JSON pair lists.
 
 ## Training
 
@@ -75,7 +68,7 @@ bash train_tool.sh
 bash train_cook.sh
 ```
 
-Each command runs one subset in the foreground. Use separate terminals to run subsets concurrently, subject to available memory. Each script creates a timestamped log directory and automatically evaluates saved checkpoints on 100 test sequences.
+Each command runs one subset in the foreground. Use separate terminals to run subsets concurrently, subject to available memory. Each script creates a timestamped log directory and automatically evaluates saved checkpoints on 200 test sequences.
 
 | Setting | Value |
 | --- | ---: |
@@ -93,7 +86,7 @@ Each command runs one subset in the foreground. Use separate terminals to run su
 | Additional checkpoint | 1,000 learner updates |
 | Evaluation sequences per checkpoint | 200 |
 
-An optional first argument sets the output directory, which must not already exist:
+An optional first argument can be used to specify an output directory:
 
 ```bash
 bash train_daily.sh ./logs/daily_run
@@ -101,15 +94,9 @@ bash train_daily.sh ./logs/daily_run
 
 Scripts: [daily](train_daily.sh), [tool](train_tool.sh), [cook](train_cook.sh). Full training and evaluation commands are recorded in the corresponding log subdirectories.
 
-### Steps, updates, and checkpoints
+### Saving checkpoints
 
-- **`--T-max` counts vector-environment steps.** With 16 environments, `T-max=100000` gives 1.6 million placement attempts. Invalid transitions can make the number of stored transitions slightly smaller.
-- **A learner update trains each network once:** one order-network update and one location-network update.
-- Environment collection and learning run asynchronously in `--distributed` mode. There is no fixed conversion from `T-max` to learner updates, and equal `T-max` values can produce different update counts across subsets.
-- **`--learn-start 500`** starts the learner after 500 vector-environment steps of replay-buffer warmup.
 - **`--save-interval 5000`** saves paired checkpoints at learner updates 5,000, 10,000, and so on in this distributed hierarchical path. `--checkpoint-interval` is a legacy setting and does not control that schedule.
-- `--evaluation-seconds 0` disables hourly snapshots. With a positive value, the runtime can additionally publish time-based snapshots; an external experiment monitor is responsible for evaluating them.
-- On normal shutdown, the runtime also writes a `final` checkpoint. A `final` directory alone is not proof that a run reached its target: inspect the process exit status and progress, because learner cleanup can also save after a failure.
 
 The replay capacity is divided across environments separately for the order and location memories. The sampler divides a batch across those memories; use a batch size divisible by the environment count, such as 64 with 16 environments.
 
@@ -132,32 +119,6 @@ bash run_opa_pack.sh \
 ```
 
 These checkpoints contain network weights, not a full training-state snapshot. Optimizer state and replay buffers start fresh, and warmup runs again. `--start-update` preserves the update numbering; `T-max` specifies the new run's additional environment steps.
-
-## Train multiple subsets and evaluate checkpoint rounds
-
-`run_experiment.py` launches independent training processes on GPU 0. Once every selected subset has saved a checkpoint with the same tag, it evaluates those checkpoints sequentially and updates shared result tables. Training continues during evaluation.
-
-```bash
-python run_experiment.py \
-  --root ./logs/daily_tool_run \
-  --datasets oop_daily oop_tool \
-  --num-processes 16 --steps 100000 \
-  --volume-weight 10 --memory-capacity 100000 \
-  --save-interval 5000 --extra-checkpoint-updates 1000 --hourly-seconds 0 \
-  --eval-episodes 100
-```
-
-This launcher uses batch size 64, buffer size 10, 1,024 sampled points, and 500 placement candidates. Add `oop_cook` to `--datasets` to include kitchen. `--steps` is passed to each training process as `--T-max`; optional overrides such as `--dataset-steps oop_daily=46000 oop_tool=51500` set different values per subset. The launcher root must be a new directory.
-
-The launcher's `--resume` mode attaches to existing processes or relaunches failed ones; it is not a model-state recovery command. Use `--ordmodel`, `--locmodel`, and `--start-update` with `main.py` for explicit weight continuation.
-
-The training scripts pass `--extra-checkpoint-updates 1000` to add the first evaluation round. For a manually launched run, create `checkpoint_schedule.json` in each subset's output directory **before its learner starts**:
-
-```json
-{"extra_updates": [1000]}
-```
-
-This adds a 1k checkpoint without changing the regular 5k interval. The monitor evaluates that round once all selected subsets have saved it.
 
 ### Output layout
 
@@ -237,14 +198,27 @@ A paired checkpoint is approximately 3.84 MiB in the current architecture. Logs 
 | `environment/physics0/` | Packing simulation, reward, sequence loading, and metrics |
 | `wrapper/` | Vectorized environments and process communication |
 | `tools.py` | Data preparation/loading and evaluation routines |
-| `training_runtime.py` | Paired checkpoint publication, progress JSON, and evaluation commands |
-| `run_experiment.py` | Multi-subset training and checkpoint-round evaluation |
-| `experiment_results.py` | Parameter records and latest shared result table |
-| `env_opa_pack.yml`, `run_opa_pack.sh` | Runtime environment and entry-point wrapper |
+| `env_opa_pack.yml`| Runtime environment |
+| `run_opa_pack.sh` | entry-point wrapper |
 
 ## Acknowledgments and citation
 
-Please cite the [OPA-Pack paper](https://arxiv.org/abs/2505.13339) when using this work. The packing implementation builds on IR-BPP; please also acknowledge its contribution:
+Please cite the [OPA-Pack paper](https://arxiv.org/abs/2505.13339) when using this work:
+```bibtex
+@article{OPAPack,
+  title   = {{OPA-Pack}: Object-Property-Aware Robotic Bin Packing},
+  author  = {Pan, Jia-Hui and Cheah, Yeok Tatt and Liu, Zhengzhe and
+             Hui, Ka-Hei and Gao, Xiaojie and Heng, Pheng-Ann and
+             Liu, Yun-Hui and Fu, Chi-Wing},
+  journal = {arXiv preprint arXiv:2505.13339},
+  year    = {2025},
+  doi     = {10.48550/arXiv.2505.13339},
+  url     = {https://arxiv.org/abs/2505.13339}
+}
+```
+
+
+The packing implementation builds on IR-BPP; please also acknowledge its contribution:
 
 ```bibtex
 @article{zhao2022learning,
@@ -256,12 +230,6 @@ Please cite the [OPA-Pack paper](https://arxiv.org/abs/2505.13339) when using th
 }
 ```
 
-[IR-BPP paper](https://openreview.net/forum?id=bfuGjlCwAq) · [Original upstream README](README-IR-BPP.md)
-
 ## Usage terms
 
-The inherited IR-BPP README states:
-
 > This source code is released only for academic use. Please do not use it for commercial purposes without authorization of the author.
-
-This README does not replace or expand those terms. Refer to the upstream project and the respective dataset sources for their applicable permissions.
