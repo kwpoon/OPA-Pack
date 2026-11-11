@@ -7,9 +7,9 @@
 <p align="center">
   <a href="https://arxiv.org/abs/2505.13339"><img alt="Paper" src="https://img.shields.io/static/v1?label=Paper&amp;message=arXiv%3A2505.13339&amp;color=b31b1b&amp;logo=arxiv"></a>
   &ensp;
-  <a href="https://github.com/kwpoon/OPA-Pack/"><img alt="Project" src="https://img.shields.io/static/v1?label=Project&amp;message=GitHub&amp;color=blue&amp;logo=github"></a>
+  <a href="https://github.com/kwpoon/OPA-Pack/"><img alt="Project repository" src="https://img.shields.io/static/v1?label=Project&amp;message=GitHub&amp;color=blue&amp;logo=github"></a>
   &ensp;
-  <a href="https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing"><img alt="Dataset" src="https://img.shields.io/static/v1?label=OPA&amp;message=Google%20Drive&amp;color=green&amp;logo=Dataset"></a>
+  <a href="https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing"><img alt="OPA dataset" src="https://img.shields.io/static/v1?label=OPA&amp;message=Google%20Drive&amp;color=green&amp;logo=googledrive"></a>
 </p>
 
 ---
