@@ -1,7 +1,10 @@
 <h1 align="center">OPA-Pack: Object-Property-Aware Robotic Bin Packing</h1>
 
 <p align="center">
-  Jia-Hui Pan, Yeok Tatt Cheah, Zhengzhe Liu, Ka-Hei Hui, Xiaojie Gao, Pheng-Ann Heng, Yun-Hui Liu, and Chi-Wing Fu
+  Jia-Hui Pan, Yeok Tatt Cheah, Zhengzhe Liu, Ka-Hei Hui, Xiaojie Gao,
+</p>
+<p align="center">
+Pheng-Ann Heng, Yun-Hui Liu, and Chi-Wing Fu
 </p>
 
 <p align="center">
