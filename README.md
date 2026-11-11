@@ -12,7 +12,7 @@ Pheng-Ann Heng, Yun-Hui Liu, and Chi-Wing Fu
   &ensp;
   <a href="https://github.com/kwpoon/OPA-Pack/"><img alt="Project repository" src="https://img.shields.io/static/v1?label=Project&amp;message=GitHub&amp;color=blue&amp;logo=github"></a>
   &ensp;
-  <a href="https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing"><img alt="OPA dataset" src="https://img.shields.io/static/v1?label=OPA&amp;message=Google%20Drive&amp;color=green&amp;logo=googledrive"></a>
+  <a href="https://drive.google.com/file/d/1iTPi-63smbNX3Aqw7QbGNJOHnUY49utO/view?usp=sharing"><img alt="OPA dataset" src="https://img.shields.io/static/v1?label=OPA&amp;message=Google%20Drive&amp;color=green&amp;logo=googledrive"></a>
 </p>
 
 ---
@@ -41,7 +41,7 @@ python -c "import torch; print(torch.__version__); print('CUDA available:', torc
 
 ## 📦 Dataset
 
-Download the [processed OPA dataset](https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing) and place the subset directories under `dataset/`.
+Download the [processed OPA dataset](https://drive.google.com/file/d/1iTPi-63smbNX3Aqw7QbGNJOHnUY49utO/view?usp=sharing) and place the subset directories under `dataset/`.
 
 | Subset | Command-line name | Objects |
 | --- | --- | ---: |
