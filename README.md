@@ -1,12 +1,22 @@
-# OPA-Pack: Object-Property-Aware Robotic Bin Packing
+<h1 align="center">OPA-Pack: Object-Property-Aware Robotic Bin Packing</h1>
 
-Jia-Hui Pan, Yeok Tatt Cheah, Zhengzhe Liu, Ka-Hei Hui, Xiaojie Gao, Pheng-Ann Heng, Yun-Hui Liu, and Chi-Wing Fu
+<p align="center">
+  Jia-Hui Pan, Yeok Tatt Cheah, Zhengzhe Liu, Ka-Hei Hui, Xiaojie Gao, Pheng-Ann Heng, Yun-Hui Liu, and Chi-Wing Fu
+</p>
 
-[Paper](https://arxiv.org/abs/2505.13339) · [Project repository](https://github.com/kwpoon/OPA-Pack/) · [OPA dataset](https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing)
+<p align="center">
+  <a href="https://arxiv.org/abs/2505.13339"><img alt="Paper" src="https://img.shields.io/static/v1?label=Paper&amp;message=arXiv%3A2505.13339&amp;color=b31b1b&amp;logo=arxiv"></a>
+  &ensp;
+  <a href="https://github.com/kwpoon/OPA-Pack/"><img alt="Project repository" src="https://img.shields.io/static/v1?label=Project&amp;message=GitHub&amp;color=blue&amp;logo=github"></a>
+  &ensp;
+  <a href="https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing"><img alt="OPA dataset" src="https://img.shields.io/static/v1?label=OPA&amp;message=Google%20Drive&amp;color=green&amp;logo=googledrive"></a>
+</p>
+
+---
 
 OPA-Pack combines object-property information with reinforcement learning to pack irregular objects compactly, separate incompatible items, and reduce loads on fragile objects. This repository contains the packing-policy training and simulation evaluation code.
 
-## Method
+## 🧠 Method
 
 1. **Object properties.** The method uses multi-view vision-language reasoning and retrieved examples to predict physical and semantic properties. Rules identify incompatible object pairs. The packing code consumes the prepared property annotations and pair lists in the dataset; training does not invoke a vision-language model.
 2. **Geometry and property representation.** OPA-Net combines point-cloud geometry with object-property features. Container heightmaps describe occupancy, fragility, and avoidance regions for the object being considered.
@@ -14,7 +24,7 @@ OPA-Pack combines object-property information with reinforcement learning to pac
 
 The command-line flag is spelled `--hierachical` in the code; use that spelling in commands.
 
-## Installation
+## 🛠️ Installation
 
 The supplied environment targets Linux x86_64 and an NVIDIA GPU with a driver supporting the PyTorch CUDA 12.8 build.
 
@@ -26,7 +36,7 @@ python -c "import torch; print(torch.__version__); print('CUDA available:', torc
 
 [env_opa_pack.yml](env_opa_pack.yml) specifies Python 3.11, PyTorch 2.7.0 + CUDA 12.8, NumPy, Gym, trimesh, PyBullet, and the other runtime packages.
 
-## Dataset
+## 📦 Dataset
 
 Download the [processed OPA dataset](https://drive.google.com/file/d/1qTvWi1o9Gw3bzNREq3stjnYPLb7ZfrM6/view?usp=sharing) and place the subset directories under `dataset/`.
 
@@ -58,7 +68,7 @@ dataset/
 
 The other subsets use `dict_obj_forbid_list_oop_tool.json` and `dict_obj_forbid_list_oop_cook.json`. The runtime reads `shape_info_json` and these JSON pair lists.
 
-## Training
+## 🚀 Training
 
 Activate the Conda environment, then use the script for the desired subset:
 
@@ -155,7 +165,7 @@ logs/daily_tool_run/
 
 `ready.json` is published after both network files have been saved. Evaluation folders also contain trajectory files. The latest shared table waits for all selected subsets; it does not mix different checkpoint rounds. If one subset fails before a round is saved, the others' checkpoints remain available, but that shared round waits for the missing subset.
 
-## Evaluate a checkpoint manually
+## 📊 Evaluate a checkpoint manually
 
 Evaluate both networks from the same checkpoint directory. Match the training configuration, including the reward weights when comparing reward values.
 
@@ -174,7 +184,7 @@ bash run_opa_pack.sh \
 
 Evaluation reads `dataset/<subset>/test_sequence.pt`, starting from the first sequence. Use the same sequence file, seed, episode count, and environment settings for comparisons. The evaluator uses one environment. Direct `main.py` evaluation writes `metrics.json` and trajectories; the experiment launcher additionally records the command, status, and redirected console log.
 
-## Geometry and resource settings
+## 📐 Geometry and resource settings
 
 The configured bin is **0.32 × 0.32 × 0.30 m**. With the example resolutions:
 
@@ -188,7 +198,7 @@ Parallel environments, replay buffers, and dataset loading consume **system RAM*
 
 A paired checkpoint is approximately 3.84 MiB in the current architecture. Logs and evaluation trajectories consume additional disk space. `train.log`, `actor_progress.json`, and `progress.json` help distinguish active environment collection from learner updates; a changing learner counter alone does not prove that new experience is still being collected.
 
-## Code guide
+## 🗂️ Code guide
 
 | File or directory | Role |
 | --- | --- |
@@ -201,19 +211,16 @@ A paired checkpoint is approximately 3.84 MiB in the current architecture. Logs 
 | `env_opa_pack.yml`| Runtime environment |
 | `run_opa_pack.sh` | entry-point wrapper |
 
-## Acknowledgments and citation
+## 📝 Acknowledgments and citation
 
 Please cite the [OPA-Pack paper](https://arxiv.org/abs/2505.13339) when using this work:
 ```bibtex
-@article{OPAPack,
-  title   = {{OPA-Pack}: Object-Property-Aware Robotic Bin Packing},
-  author  = {Pan, Jia-Hui and Cheah, Yeok Tatt and Liu, Zhengzhe and
-             Hui, Ka-Hei and Gao, Xiaojie and Heng, Pheng-Ann and
-             Liu, Yun-Hui and Fu, Chi-Wing},
-  journal = {arXiv preprint arXiv:2505.13339},
-  year    = {2025},
-  doi     = {10.48550/arXiv.2505.13339},
-  url     = {https://arxiv.org/abs/2505.13339}
+@article{pan2026opa,
+  title={OPA-Pack: Object-Property-Aware Robotic Bin Packing},
+  author={Pan, Jia-Hui and Cheah, Yeok Tatt and Liu, Zhengzhe and Hui, Ka-Hei and Gao, Xiaojie and Heng, Pheng-Ann and Liu, Yun-Hui and Fu, Chi-Wing},
+  journal={IEEE Transactions on Robotics},
+  year={2026},
+  publisher={IEEE}
 }
 ```
 
@@ -230,6 +237,6 @@ The packing implementation builds on IR-BPP; please also acknowledge its contrib
 }
 ```
 
-## Usage terms
+## 📄 Usage terms
 
 > This source code is released only for academic use. Please do not use it for commercial purposes without authorization of the author.
